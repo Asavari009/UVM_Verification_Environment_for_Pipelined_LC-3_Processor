@@ -1,0 +1,18 @@
+//-----------------------------------------------------------------------------
+// decode_in_if.sv
+// Signal bundle interface for the decode_in side of the Decode block.
+// Has 3 modports -> driver_port, dut_port and the monitor_port.
+//-----------------------------------------------------------------------------
+interface decode_in_if (input bit clock);
+
+	  tri        reset;
+	  tri        enable_decode;   // master enable for Decode block
+	  tri [15:0] Instr_dout;      // fetched instruction (Instr Mem output)
+	  tri [15:0] npc_in;          // npc passed along pipeline from Fetch
+	  tri [2:0]  psr;             // N/Z/P flags from Writeback
+
+	  modport driver_port  (input clock, output reset, enable_decode, Instr_dout, npc_in, psr);
+	  modport dut_port     (input clock, reset, enable_decode, Instr_dout, npc_in, psr);
+	  modport monitor_port (input clock, reset, enable_decode, Instr_dout, npc_in, psr);
+
+endinterface : decode_in_if
